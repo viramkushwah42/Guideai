@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#4F8EF7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GuideAI">
+<meta name="description" content="AI-powered Career & Education Guidance">
+<link rel="manifest" href="./manifest.json">
+<title>GuideAI</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap');
+
+  :root {
+    --bg: #0B0F1A;
+    --surface: #131929;
+    --card: #1A2237;
+    --border: #243050;
+    --accent: #4F8EF7;
+    --accent2: #7C5CFC;
+    --green: #2ECC9A;
+    --text: #E8EDF5;
+    --muted: #7A8BA8;
+    --user-bubble: #1E3A6E;
+    --ai-bubble: #1A2237;
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  .app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    height: 100dvh;
+  }
+
+  /* Header */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .logo-text {
+    font-family: 'Instrument Serif', serif;
+    font-size: 20px;
+    font-style: italic;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .lang-pill {
+    display: flex;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .lang-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    padding: 4px 9px;
+    font-size: 11px;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .lang-btn.active {
+    background: var(--accent);
+    color: white;
+  }
+
+  .install-btn {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none;
+    color: white;
+    padding: 5px 11px;
+    border-radius: 16px;
+    font-size: 11px;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    display: none;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .install-btn.show { display: flex; }
+
+  /* Messages area */
+  .messages-wrap {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 12px;
+  }
+
+  /* Welcome */
+  .welcome {
+    padding: 28px 4px 20px;
+    text-align: center;
+  }
+
+  .welcome h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 28px;
+    font-style: italic;
+    line-height: 1.25;
+    margin-bottom: 8px;
+  }
+
+  .welcome h1 span {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .welcome p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    justify-content: center;
+  }
+
+  .chip {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 7px 12px;
+    border-radius: 18px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Space Grotesk', sans-serif;
+    text-align: left;
+  }
+
+  .chip:active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(79,142,247,0.08);
+  }
+
+  /* Messages */
+  .messages {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 8px 0 12px;
+  }
+
+  .msg {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    animation: fadeUp 0.25s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg.user { flex-direction: row-reverse; }
+
+  .avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .avatar.ai { background: linear-gradient(135deg, var(--accent), var(--accent2)); }
+  .avatar.user { background: var(--user-bubble); border: 1px solid var(--border); }
+
+  .bubble {
+    max-width: 78%;
+    padding: 10px 13px;
+    border-radius: 14px;
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+
+  .msg.ai .bubble {
+    background: var(--ai-bubble);
+    border: 1px solid var(--border);
+    border-top-left-radius: 3px;
+  }
+
+  .msg.user .bubble {
+    background: var(--user-bubble);
+    border: 1px solid #2A4A80;
+    border-top-right-radius: 3px;
+  }
+
+  /* Typing */
+  .typing-dots {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    padding: 10px 4px;
+  }
+
+  .dot {
+    width: 6px; height: 6px;
+    background: var(--muted);
+    border-radius: 50%;
+    animation: bounce 1.2s infinite;
+  }
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes bounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-5px); opacity: 1; }
+  }
+
+  /* Input */
+  .input-area {
+    flex-shrink: 0;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 10px 12px;
+    padding-bottom: calc(10px + var(--safe-bottom));
+  }
+
+  .input-row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 8px 10px;
+    transition: border-color 0.2s;
+  }
+
+  .input-row:focus-within { border-color: var(--accent); }
+
+  textarea {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    resize: none;
+    max-height: 100px;
+    line-height: 1.5;
+  }
+
+  textarea::placeholder { color: var(--muted); }
+
+  .send-btn {
+    width: 34px; height: 34px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: opacity 0.2s;
+  }
+
+  .send-btn:active { opacity: 0.75; }
+  .send-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .send-btn svg { width: 15px; height: 15px; fill: white; }
+
+  /* Install banner */
+  .install-banner {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, rgba(79,142,247,0.15), rgba(124,92,252,0.15));
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 10px 14px;
+    margin: 8px 12px 0;
+    gap: 10px;
+  }
+
+  .install-banner.show { display: flex; }
+
+  .install-banner p {
+    font-size: 12px;
+    color: var(--text);
+    flex: 1;
+  }
+
+  .install-banner p span { color: var(--accent); font-weight: 600; }
+
+  .banner-btns { display: flex; gap: 6px; }
+
+  .banner-install {
+    background: var(--accent);
+    border: none;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+  }
+
+  .banner-close {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 5px 8px;
+    border-radius: 8px;
+    font-size: 11px;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <div class="logo">
+      <div class="logo-icon">🎯</div>
+      <div class="logo-text">GuideAI</div>
+    </div>
+    <div class="header-right">
+      <div class="lang-pill">
+        <button class="lang-btn active" onclick="setLang('hi',this)">हि</button>
+        <button class="lang-btn" onclick="setLang('en',this)">EN</button>
+        <button class="lang-btn" onclick="setLang('ar',this)">ع</button>
+        <button class="lang-btn" onclick="setLang('es',this)">ES</button>
+      </div>
+      <button class="install-btn" id="installHeaderBtn" onclick="triggerInstall()">⬇ Install</button>
+    </div>
+  </header>
+
+  <!-- Install banner -->
+  <div class="install-banner" id="installBanner">
+    <p>📱 <span>GuideAI</span> ko apne phone mein install karein — bilkul app ki tarah!</p>
+    <div class="banner-btns">
+      <button class="banner-install" onclick="triggerInstall()">Install</button>
+      <button class="banner-close" onclick="closeBanner()">✕</button>
+    </div>
+  </div>
+
+  <div class="messages-wrap" id="messagesWrap">
+    <div class="welcome" id="welcome">
+      <h1>Apna <span>Career</span> &<br><span>Education</span> Sawal Poochho</h1>
+      <p>AI aapki problem samjhega aur<br>personalized solution dega 🌍</p>
+      <div class="suggestions" id="chips">
+        <button class="chip" onclick="sendChip(this)">🎓 Kaun sa course karun?</button>
+        <button class="chip" onclick="sendChip(this)">💼 Software engineer kaise banun?</button>
+        <button class="chip" onclick="sendChip(this)">📊 Data Science ya AI?</button>
+        <button class="chip" onclick="sendChip(this)">🌍 Abroad padhai ke liye kya karun?</button>
+        <button class="chip" onclick="sendChip(this)">💰 High salary jobs kaunsi hain?</button>
+        <button class="chip" onclick="sendChip(this)">📝 Resume kaise banayein?</button>
+      </div>
+    </div>
+    <div class="messages" id="messages"></div>
+  </div>
+
+  <div class="input-area">
+    <div class="input-row">
+      <textarea
+        id="userInput"
+        rows="1"
+        placeholder="Apna sawal likho..."
+        onkeydown="handleKey(event)"
+        oninput="autoResize(this)"
+      ></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+        <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // PWA Install
+  let deferredPrompt = null;
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.getElementById('installBanner').classList.add('show');
+    document.getElementById('installHeaderBtn').classList.add('show');
+  });
+
+  function triggerInstall() {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(() => {
+        deferredPrompt = null;
+        closeBanner();
+        document.getElementById('installHeaderBtn').classList.remove('show');
+      });
+    }
+  }
+
+  function closeBanner() {
+    document.getElementById('installBanner').classList.remove('show');
+  }
+
+  // Service Worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  }
+
+  // App Logic
+  let currentLang = 'hi';
+  let isLoading = false;
+  let history = [];
+
+  const systemPrompts = {
+    hi: `Aap GuideAI hain — ek world-class AI career aur education advisor. Aap students aur professionals ko unki career aur education problems ka solution dete hain. Hamesha Hindi mein jawab dein. Friendly, warm, encouraging tone rakhein. Practical actionable steps batayein. Emojis use karein. Helpful follow-up questions zaroor poochein. Real resources recommend karein.`,
+    en: `You are GuideAI — a world-class AI career and education advisor helping people globally. Always respond in English. Be friendly, warm, and encouraging. Give practical steps. Use emojis. Ask helpful follow-up questions. Recommend real resources.`,
+    ar: `أنت GuideAI — مستشار ذكاء اصطناعي عالمي للتعليم والمهنة. أجب دائمًا باللغة العربية. كن ودودًا ومشجعًا. قدم خطوات عملية. استخدم الرموز التعبيرية. اسأل أسئلة متابعة.`,
+    es: `Eres GuideAI — asesor experto en carrera y educación. Responde siempre en español. Sé amigable y alentador. Da pasos prácticos. Usa emojis. Haz preguntas de seguimiento útiles.`
+  };
+
+  const placeholders = {
+    hi: 'Apna sawal likho...',
+    en: 'Ask your question...',
+    ar: 'اكتب سؤالك...',
+    es: 'Escribe tu pregunta...'
+  };
+
+  function setLang(lang, btn) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('userInput').placeholder = placeholders[lang];
+  }
+
+  function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+  }
+
+  function handleKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  }
+
+  function sendChip(el) {
+    document.getElementById('userInput').value = el.textContent.trim();
+    sendMessage();
+  }
+
+  function addMessage(role, content) {
+    document.getElementById('welcome').style.display = 'none';
+    const msgs = document.getElementById('messages');
+    const wrap = document.getElementById('messagesWrap');
+
+    const div = document.createElement('div');
+    div.className = `msg ${role}`;
+
+    const avatar = document.createElement('div');
+    avatar.className = `avatar ${role}`;
+    avatar.textContent = role === 'ai' ? '🎯' : '👤';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.innerHTML = content.replace(/\n/g, '<br>');
+
+    div.appendChild(avatar);
+    div.appendChild(bubble);
+    msgs.appendChild(div);
+
+    setTimeout(() => wrap.scrollTop = wrap.scrollHeight, 50);
+  }
+
+  function showTyping() {
+    const msgs = document.getElementById('messages');
+    const div = document.createElement('div');
+    div.className = 'msg ai';
+    div.id = 'typing';
+    const avatar = document.createElement('div');
+    avatar.className = 'avatar ai';
+    avatar.textContent = '🎯';
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.innerHTML = '<div class="typing-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+    div.appendChild(avatar);
+    div.appendChild(bubble);
+    msgs.appendChild(div);
+    setTimeout(() => document.getElementById('messagesWrap').scrollTop = 99999, 50);
+  }
+
+  function removeTyping() {
+    const t = document.getElementById('typing');
+    if (t) t.remove();
+  }
+
+  async function sendMessage() {
+    if (isLoading) return;
+    const input = document.getElementById('userInput');
+    const text = input.value.trim();
+    if (!text) return;
+
+    input.value = '';
+    input.style.height = 'auto';
+    isLoading = true;
+    document.getElementById('sendBtn').disabled = true;
+
+    addMessage('user', text);
+    history.push({ role: 'user', content: text });
+    showTyping();
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 1000,
+          system: systemPrompts[currentLang],
+          messages: history
+        })
+      });
+
+      const data = await res.json();
+      removeTyping();
+      const reply = data.content?.[0]?.text || 'Kuch galat ho gaya, dobara try karein.';
+      history.push({ role: 'assistant', content: reply });
+      addMessage('ai', reply);
+    } catch {
+      removeTyping();
+      addMessage('ai', '⚠️ Connection problem. Please try again.');
+    }
+
+    isLoading = false;
+    document.getElementById('sendBtn').disabled = false;
+    input.focus();
+  }
+</script>
+</body>
+</html>
