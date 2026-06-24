@@ -42,7 +42,7 @@ header{background:#161929;border-bottom:1px solid #2a3050;padding:14px 20px;disp
 .chat-input{flex:1;background:#1e2235;border:1px solid #2a3050;border-radius:14px;padding:12px 16px;color:#e8eaf6;font-size:0.9rem;outline:none;resize:none;min-height:48px;max-height:120px;transition:border-color 0.2s;line-height:1.4;font-family:'Inter',sans-serif}
 .chat-input:focus{border-color:#6c63ff}
 .chat-input::placeholder{color:#8892b0}
-.send-btn{background:linear-gradient(135deg,#6c63ff,#8b5cf6);border:none;border-radius:14px;width:48px;height:48px;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity 0.2s,transform 0.1s;color:#fff}
+.send-btn{background:linear-gradient(135deg,#6c63ff,#8b5cf6);border:none;border-radius:14px;width:48px;height:48px;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff}
 .send-btn:active{transform:scale(0.93)}
 .send-btn:disabled{opacity:0.5;cursor:not-allowed}
 .typing{display:flex;gap:5px;padding:10px 14px;background:#161929;border:1px solid #2a3050;border-radius:14px;border-bottom-left-radius:4px;width:fit-content}
@@ -51,8 +51,6 @@ header{background:#161929;border-bottom:1px solid #2a3050;padding:14px 20px;disp
 .typing span:nth-child(3){animation-delay:0.4s}
 @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
 footer{text-align:center;padding:20px;color:#8892b0;font-size:0.75rem;border-top:1px solid #2a3050}
-.chat-box::-webkit-scrollbar{width:4px}
-.chat-box::-webkit-scrollbar-thumb{background:#2a3050;border-radius:2px}
 </style>
 </head>
 <body>
@@ -76,7 +74,7 @@ footer{text-align:center;padding:20px;color:#8892b0;font-size:0.75rem;border-top
 <div class="stat-card"><div class="stat-num">AI</div><div class="stat-label" id="s3">पावर्ड</div></div>
 </div>
 <div class="section">
-<div class="section-title" id="topic-heading">जल्दी पूछो</div>
+<div class="section-title">जल्दी पूछो</div>
 <div class="topics-grid">
 <div class="topic-card" onclick="quickAsk('करियर चुनने में मदद करो')"><div class="topic-icon">🎯</div><div class="topic-title">करियर गाइड</div><div class="topic-sub">सही रास्ता खोजो</div></div>
 <div class="topic-card" onclick="quickAsk('स्कॉलरशिप के बारे में बताओ')"><div class="topic-icon">🎓</div><div class="topic-title">स्कॉलरशिप</div><div class="topic-sub">फ्री पढ़ाई के रास्ते</div></div>
@@ -101,20 +99,11 @@ var currentLang='hi';
 var sysPrompts={
 hi:'तुम GuideAI हो — एक friendly AI career और education guide। हमेशा Hindi में जवाब दो। Students को करियर, scholarship, courses, और government jobs के बारे में practical advice दो। Bullet points use करो।',
 en:'You are GuideAI — a friendly AI career and education guide. Always reply in English. Help students with career, scholarships, courses, and government jobs. Use bullet points.',
-ar:'أنت GuideAI - مساعد ذكاء اصطناعي للتوجيه المهني. أجب دائماً بالعربية. ساعد الطلاب في المهنة والمنح والدورات.',
-es:'Eres GuideAI - un asistente de orientación profesional con IA. Responde siempre en español. Ayuda a estudiantes con carrera, becas y cursos.'
+ar:'أنت GuideAI - مساعد ذكاء اصطناعي للتوجيه المهني. أجب دائماً بالعربية.',
+es:'Eres GuideAI - un asistente de orientación profesional con IA. Responde siempre en español.'
 };
 function changeLang(l){
 currentLang=l;
-var t={hi:['AI करियर सहायक','आपका <span>सपना</span>,<br/>हमारी <span>राह</span> 🎯','कोई भी सवाल पूछो — पढ़ाई, करियर, स्कॉलरशिप — GuideAI सही दिशा देगा।','भाषाएं','उपलब्ध','पावर्ड','जल्दी पूछो'],en:['AI Career Assistant','Your <span>Dream</span>,<br/>Our <span>Guidance</span> 🎯','Ask anything about studies, career, scholarships — GuideAI will guide you.','Languages','Available','Powered','Quick Topics'],ar:['مساعد المهنة','حلمك <span>يبدأ</span><br/>من هنا 🎯','اسأل أي شيء عن الدراسة والمهنة — GuideAI سيرشدك.','لغات','متاح','ذكاء اصطناعي','مواضيع سريعة'],es:['Asistente IA','Tu <span>Sueño</span>,<br/>Nuestra <span>Guía</span> 🎯','Pregunta cualquier cosa sobre estudios y carrera — GuideAI te orientará.','Idiomas','Disponible','Con IA','Temas Rápidos']};
-var d=t[l]||t['hi'];
-document.getElementById('badge').textContent=d[0];
-document.getElementById('hero-title').innerHTML=d[1];
-document.getElementById('hero-sub').textContent=d[2];
-document.getElementById('s1').textContent=d[3];
-document.getElementById('s2').textContent=d[4];
-document.getElementById('s3').textContent=d[5];
-document.getElementById('topic-heading').textContent=d[6];
 document.documentElement.dir=l==='ar'?'rtl':'ltr';
 messages=[];
 document.getElementById('chatBox').innerHTML='<div class="chat-placeholder">💬 Topic चुनो या सवाल लिखो</div>';
@@ -151,10 +140,10 @@ appendMsg('user',text);
 messages.push({role:'user',content:text});
 showTyping();
 try{
-var res=await fetch('https://api.anthropic.com/v1/messages',{
+var res=await fetch('/.netlify/functions/chat',{
 method:'POST',
 headers:{'Content-Type':'application/json'},
-body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,system:sysPrompts[currentLang],messages:messages})
+body:JSON.stringify({system:sysPrompts[currentLang],messages:messages})
 });
 var data=await res.json();
 var reply=data.content&&data.content[0]?data.content[0].text:'माफ करना, कुछ गड़बड़ हुई।';
