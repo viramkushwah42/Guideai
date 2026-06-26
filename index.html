@@ -8,55 +8,45 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#0d0f1a;color:#e8eaf6;font-family:'Inter',sans-serif;min-height:100vh}
-header{background:#161929;border-bottom:1px solid #2a3050;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-.logo{font-family:'Baloo 2',sans-serif;font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,#6c63ff,#ffd166);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.lang-select{background:#1e2235;border:1px solid #2a3050;color:#e8eaf6;padding:6px 12px;border-radius:20px;font-size:0.8rem;cursor:pointer;outline:none}
+header{background:#161929;border-bottom:1px solid #2a3050;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Baloo 2',sans-serif;font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,#6c63ff,#ffd166);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+select{background:#1e2235;border:1px solid #2a3050;color:#e8eaf6;padding:6px 12px;border-radius:20px;font-size:0.9rem;cursor:pointer}
 .hero{padding:40px 20px 30px;text-align:center}
-.hero-badge{display:inline-block;background:rgba(108,99,255,0.15);border:1px solid rgba(108,99,255,0.4);color:#a5a0ff;padding:5px 14px;border-radius:20px;font-size:0.75rem;font-weight:600;margin-bottom:16px}
 .hero h1{font-family:'Baloo 2',sans-serif;font-size:2rem;font-weight:800;line-height:1.2;margin-bottom:12px}
-.hero h1 span{background:linear-gradient(135deg,#6c63ff,#ffd166);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero h1 span{background:linear-gradient(135deg,#6c63ff,#ffd166);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .hero p{color:#8892b0;font-size:0.95rem;line-height:1.6;max-width:340px;margin:0 auto 24px}
-.stats-row{display:flex;gap:10px;padding:0 20px 28px}
+.stats-row{display:flex;gap:10px;padding:0 20px 20px}
 .stat-card{flex:1;background:#1e2235;border:1px solid #2a3050;border-radius:16px;padding:14px;text-align:center}
-.stat-num{font-family:'Baloo 2',sans-serif;font-size:1.5rem;font-weight:800;color:#ffd166}
+.stat-num{font-family:'Baloo 2',sans-serif;font-size:1.6rem;font-weight:700;color:#ffd166}
 .stat-label{font-size:0.7rem;color:#8892b0;margin-top:2px}
-.section{padding:0 20px 28px}
-.section-title{font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#8892b0;margin-bottom:14px}
-.topics-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.topic-card{background:#1e2235;border:1px solid #2a3050;border-radius:16px;padding:16px 14px;cursor:pointer;transition:all 0.2s;text-align:left}
-.topic-card:active{transform:scale(0.97);border-color:#6c63ff}
-.topic-icon{font-size:1.6rem;margin-bottom:8px}
-.topic-title{font-size:0.85rem;font-weight:600;color:#e8eaf6;margin-bottom:3px}
-.topic-sub{font-size:0.72rem;color:#8892b0}
+.section-title{padding:0 20px 12px;font-size:0.88rem;font-weight:600;color:#8892b0;letter-spacing:0.05em;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 20px 20px}
+.card{background:#1e2235;border:1px solid #2a3050;border-radius:16px;padding:16px 14px;cursor:pointer;transition:all 0.2s}
+.card:active{transform:scale(0.97)}
+.card-icon{font-size:1.6rem;margin-bottom:8px}
+.card-title{font-size:0.85rem;font-weight:600;color:#e8eaf6;margin-bottom:3px}
+.card-sub{font-size:0.72rem;color:#8892b0}
 .chat-section{padding:0 20px 20px}
-.chat-box{background:#1e2235;border:1px solid #2a3050;border-radius:16px;min-height:200px;max-height:340px;overflow-y:auto;padding:16px;margin-bottom:12px;scroll-behavior:smooth}
-.chat-placeholder{color:#8892b0;font-size:0.85rem;text-align:center;padding:40px 20px;line-height:1.6}
-.msg{margin-bottom:14px;display:flex;flex-direction:column}
-.msg.user{align-items:flex-end}
-.msg.ai{align-items:flex-start}
-.msg-bubble{max-width:85%;padding:10px 14px;border-radius:14px;font-size:0.88rem;line-height:1.55}
-.msg.user .msg-bubble{background:linear-gradient(135deg,#6c63ff,#8b5cf6);color:#fff;border-bottom-right-radius:4px}
-.msg.ai .msg-bubble{background:#161929;border:1px solid #2a3050;color:#e8eaf6;border-bottom-left-radius:4px}
-.msg-label{font-size:0.65rem;color:#8892b0;margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em}
-.input-row{display:flex;gap:10px;align-items:flex-end}
-.chat-input{flex:1;background:#1e2235;border:1px solid #2a3050;border-radius:14px;padding:12px 16px;color:#e8eaf6;font-size:0.9rem;outline:none;resize:none;min-height:48px;max-height:120px;transition:border-color 0.2s;line-height:1.4;font-family:'Inter',sans-serif}
-.chat-input:focus{border-color:#6c63ff}
-.chat-input::placeholder{color:#8892b0}
-.send-btn{background:linear-gradient(135deg,#6c63ff,#8b5cf6);border:none;border-radius:14px;width:48px;height:48px;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff}
+.chat-title{font-size:0.88rem;font-weight:600;color:#8892b0;margin-bottom:12px;letter-spacing:0.05em;text-transform:uppercase}
+.chat-box{background:#1e2235;border:1px solid #2a3050;border-radius:16px;min-height:200px;max-height:340px;overflow-y:auto;padding:16px;margin-bottom:12px;line-height:1.6}
+.msg{margin-bottom:12px}
+.msg.user{text-align:right}
+.msg-label{font-size:0.72rem;color:#8892b0;margin-bottom:4px}
+.msg-bubble{display:inline-block;padding:10px 14px;border-radius:14px;font-size:0.9rem;max-width:85%;text-align:left}
+.msg.user .msg-bubble{background:linear-gradient(135deg,#6c63ff,#8b5cf6);color:#fff}
+.msg.ai .msg-bubble{background:#161929;border:1px solid #2a3050;color:#e8eaf6}
+.input-row{display:flex;gap:8px}
+.input-row textarea{flex:1;background:#1e2235;border:1px solid #2a3050;border-radius:14px;padding:12px 16px;color:#e8eaf6;font-size:0.9rem;resize:none;height:auto;outline:none;font-family:'Inter',sans-serif}
+.send-btn{background:linear-gradient(135deg,#6c63ff,#8b5cf6);border:none;border-radius:14px;width:48px;height:48px;cursor:pointer;font-size:1.2rem;color:#fff;transition:transform 0.2s}
 .send-btn:active{transform:scale(0.93)}
-.send-btn:disabled{opacity:0.5;cursor:not-allowed}
-.typing{display:flex;gap:5px;padding:10px 14px;background:#161929;border:1px solid #2a3050;border-radius:14px;border-bottom-left-radius:4px;width:fit-content}
-.typing span{width:7px;height:7px;background:#8892b0;border-radius:50%;animation:bounce 1.2s infinite}
-.typing span:nth-child(2){animation-delay:0.2s}
-.typing span:nth-child(3){animation-delay:0.4s}
-@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
-footer{text-align:center;padding:20px;color:#8892b0;font-size:0.75rem;border-top:1px solid #2a3050}
+.empty-chat{text-align:center;color:#8892b0;font-size:0.9rem;padding:40px 20px}
+footer{text-align:center;padding:20px;font-size:0.75rem;color:#8892b0;border-top:1px solid #2a3050}
 </style>
 </head>
 <body>
 <header>
-<div class="logo">GuideAI ✨</div>
-<select class="lang-select" id="langSelect" onchange="changeLang(this.value)">
+<div class="logo">GuideAI ✦</div>
+<select id="langSelect" onchange="changeLang(this.value)">
 <option value="hi">🇮🇳 हिंदी</option>
 <option value="en">🇬🇧 English</option>
 <option value="ar">🇸🇦 العربية</option>
@@ -64,78 +54,77 @@ footer{text-align:center;padding:20px;color:#8892b0;font-size:0.75rem;border-top
 </select>
 </header>
 <div class="hero">
-<div class="hero-badge" id="badge">AI करियर सहायक</div>
-<h1 id="hero-title">आपका <span>सपना</span>,<br/>हमारी <span>राह</span> 🎯</h1>
-<p id="hero-sub">कोई भी सवाल पूछो — पढ़ाई, करियर, स्कॉलरशिप — GuideAI सही दिशा देगा।</p>
+<h1>आपका सपना,<br/><span>हमारी राह</span> 🎯</h1>
+<p>कोई भी सवाल पूछो — पढ़ाई, करियर, स्कॉलरशिप — GuideAI सही दिशा देगा।</p>
 </div>
 <div class="stats-row">
-<div class="stat-card"><div class="stat-num">4+</div><div class="stat-label" id="s1">भाषाएं</div></div>
-<div class="stat-card"><div class="stat-num">24/7</div><div class="stat-label" id="s2">उपलब्ध</div></div>
-<div class="stat-card"><div class="stat-num">AI</div><div class="stat-label" id="s3">पावर्ड</div></div>
+<div class="stat-card"><div class="stat-num">4+</div><div class="stat-label">भाषाएं</div></div>
+<div class="stat-card"><div class="stat-num">24/7</div><div class="stat-label">उपलब्ध</div></div>
+<div class="stat-card"><div class="stat-num">AI</div><div class="stat-label">पावर्ड</div></div>
 </div>
-<div class="section">
 <div class="section-title">जल्दी पूछो</div>
-<div class="topics-grid">
-<div class="topic-card" onclick="quickAsk('करियर चुनने में मदद करो')"><div class="topic-icon">🎯</div><div class="topic-title">करियर गाइड</div><div class="topic-sub">सही रास्ता खोजो</div></div>
-<div class="topic-card" onclick="quickAsk('स्कॉलरशिप के बारे में बताओ')"><div class="topic-icon">🎓</div><div class="topic-title">स्कॉलरशिप</div><div class="topic-sub">फ्री पढ़ाई के रास्ते</div></div>
-<div class="topic-card" onclick="quickAsk('कौन सा कोर्स करूं')"><div class="topic-icon">📚</div><div class="topic-title">कोर्स सलाह</div><div class="topic-sub">बेस्ट कोर्स ढूंढो</div></div>
-<div class="topic-card" onclick="quickAsk('सरकारी नौकरी की तैयारी कैसे करें')"><div class="topic-icon">🏛️</div><div class="topic-title">Govt Jobs</div><div class="topic-sub">सरकारी नौकरी</div></div>
-</div>
+<div class="grid">
+<div class="card" onclick="quickAsk('करियर चुनने में मदद करो')"><div class="card-icon">🎯</div><div class="card-title">करियर गाइड</div><div class="card-sub">सही रास्ता खोजो</div></div>
+<div class="card" onclick="quickAsk('स्कॉलरशिप के बारे में बताओ')"><div class="card-icon">🎓</div><div class="card-title">स्कॉलरशिप</div><div class="card-sub">फ्री पढ़ाई के रास्ते</div></div>
+<div class="card" onclick="quickAsk('कौन सा कोर्स करूं')"><div class="card-icon">📚</div><div class="card-title">कोर्स सलाह</div><div class="card-sub">बेस्ट कोर्स ढूंढो</div></div>
+<div class="card" onclick="quickAsk('सरकारी नौकरी की तैयारी कैसे करें')"><div class="card-icon">🏛️</div><div class="card-title">Govt Jobs</div><div class="card-sub">सरकारी नौकरी</div></div>
 </div>
 <div class="chat-section">
-<div class="section-title">AI से बात करो</div>
+<div class="chat-title">AI से बात करो</div>
 <div class="chat-box" id="chatBox">
-<div class="chat-placeholder">💬 ऊपर से कोई topic चुनो<br/>या नीचे अपना सवाल लिखो</div>
+<div class="empty-chat">💬 ऊपर से कोई topic चुनो<br/>या नीचे अपना सवाल लिखो</div>
 </div>
 <div class="input-row">
-<textarea class="chat-input" id="userInput" placeholder="यहाँ लिखो..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
-<button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+<textarea id="userInput" placeholder="यहाँ लिखो..." rows="1"></textarea>
+<button class="send-btn" onclick="sendMessage()">➤</button>
 </div>
 </div>
 <footer>GuideAI © 2025 · Made with ❤️ by Viram</footer>
 <script>
 var messages=[];
 var currentLang='hi';
-var sysPrompts={
-hi:'तुम GuideAI हो — एक friendly AI career और education guide। हमेशा Hindi में जवाब दो। Students को करियर, scholarship, courses, और government jobs के बारे में practical advice दो। Bullet points use करो।',
-en:'You are GuideAI — a friendly AI career and education guide. Always reply in English. Help students with career, scholarships, courses, and government jobs. Use bullet points.',
-ar:'أنت GuideAI - مساعد ذكاء اصطناعي للتوجيه المهني. أجب دائماً بالعربية.',
-es:'Eres GuideAI - un asistente de orientación profesional con IA. Responde siempre en español.'
-};
-function changeLang(l){
-currentLang=l;
-document.documentElement.dir=l==='ar'?'rtl':'ltr';
-messages=[];
-document.getElementById('chatBox').innerHTML='<div class="chat-placeholder">💬 Topic चुनो या सवाल लिखो</div>';
+
+function changeLang(lang){
+currentLang=lang;
 }
-function quickAsk(q){document.getElementById('userInput').value=q;sendMessage();}
-function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,120)+'px';}
-function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
+
+function quickAsk(text){
+document.getElementById('userInput').value=text;
+sendMessage();
+}
+
 function appendMsg(role,text){
 var box=document.getElementById('chatBox');
-var ph=box.querySelector('.chat-placeholder');
-if(ph)ph.remove();
+var empty=box.querySelector('.empty-chat');
+if(empty)empty.remove();
 var div=document.createElement('div');
 div.className='msg '+role;
 var label=role==='user'?'👤 आप':'🤖 GuideAI';
-div.innerHTML='<div class="msg-label">'+label+'</div><div class="msg-bubble">'+text.replace(/\n/g,'<br/>')+'</div>';
+div.innerHTML='<div class="msg-label">'+label+'</div><div class="msg-bubble">'+text+'</div>';
 box.appendChild(div);
 box.scrollTop=box.scrollHeight;
 }
+
 function showTyping(){
 var box=document.getElementById('chatBox');
 var div=document.createElement('div');
-div.className='msg ai';div.id='typing-ind';
-div.innerHTML='<div class="msg-label">🤖 GuideAI</div><div class="typing"><span></span><span></span><span></span></div>';
-box.appendChild(div);box.scrollTop=box.scrollHeight;
+div.className='msg ai';
+div.id='typing-ind';
+div.innerHTML='<div class="msg-label">🤖 GuideAI</div><div class="msg-bubble">⏳ सोच रहा हूं...</div>';
+box.appendChild(div);
+box.scrollTop=box.scrollHeight;
 }
-function removeTyping(){var t=document.getElementById('typing-ind');if(t)t.remove();}
+
+function removeTyping(){
+var t=document.getElementById('typing-ind');
+if(t)t.remove();
+}
+
 async function sendMessage(){
 var input=document.getElementById('userInput');
-var btn=document.getElementById('sendBtn');
 var text=input.value.trim();
 if(!text)return;
-input.value='';input.style.height='auto';btn.disabled=true;
+input.value='';
 appendMsg('user',text);
 messages.push({role:'user',content:text});
 showTyping();
@@ -149,10 +138,16 @@ messages:messages
 })
 });
 var data=await res.json();
-if(data.error){removeTyping();appendMsg('ai','❌ Error: '+data.error);return;}
+removeTyping();
+if(data.error){appendMsg('ai','❌ Error: '+data.error);return;}
 var reply=data.reply||'कोई जवाब नहीं मिला।';
-removeTyping();appendMsg('ai',reply);
+appendMsg('ai',reply);
 messages.push({role:'assistant',content:reply});
 }catch(err){
-removeTyping();appendMsg('ai','⚠️ नेटवर्क की समस्या: '+err.message);
+removeTyping();
+appendMsg('ai','⚠️ Error: '+err.message);
 }
+}
+</script>
+</body>
+</html>
