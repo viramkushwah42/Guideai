@@ -143,17 +143,16 @@ try{
 var res=await fetch('/api/chat',{
 method:'POST',
 headers:{'Content-Type':'application/json'},
-body:JSON.stringify({system:sysPrompts[currentLang],messages:messages})
+body:JSON.stringify({
+system:'You are GuideAI, a helpful AI assistant for education and career guidance in India. Always respond in Hindi.',
+messages:messages
+})
 });
 var data=await res.json();
-var reply=data.content&&data.content[0]?data.content[0].text:'माफ करना, कुछ गड़बड़ हुई।';
+if(data.error){removeTyping();appendMsg('ai','❌ Error: '+data.error);return;}
+var reply=data.reply||'कोई जवाब नहीं मिला।';
 removeTyping();appendMsg('ai',reply);
 messages.push({role:'assistant',content:reply});
 }catch(err){
-removeTyping();appendMsg('ai','⚠️ नेटवर्क की समस्या। इंटरनेट चेक करो।');
+removeTyping();appendMsg('ai','⚠️ नेटवर्क की समस्या: '+err.message);
 }
-btn.disabled=false;
-}
-</script>
-</body>
-</html>
