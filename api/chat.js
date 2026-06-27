@@ -5,6 +5,10 @@ export default async function handler(req, res) {
 
   const { message, language } = req.body;
 
+  if (!message || message.trim() === '') {
+    return res.status(400).json({ error: 'Message is empty' });
+  }
+
   const systemPrompt = `You are GuideAI, an education and career guidance assistant. 
 Reply in ${language === 'hi' ? 'Hindi' : language === 'ar' ? 'Arabic' : language === 'es' ? 'Spanish' : 'English'}.
 Help students with courses, careers, scholarships, and government jobs.`;
@@ -16,22 +20,25 @@ Help students with courses, careers, scholarships, and government jobs.`;
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          system_instruction: { parts: [{ text: systemPrompt }] },
-          contents: [{ role: "user", parts: [{ text: message }] }]
+          contents: [
+            {
+              role: "user",
+              parts: [{ text: systemPrompt + "\n\nUser: " + message }]
+            }
+          ]
         })
       }
     );
 
     const data = await response.json();
-    
-    // Debug: response dekho
+
     if (data.error) {
       return res.status(500).json({ error: data.error.message });
     }
 
     const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!reply) {
-      return res.status(500).json({ error: 'Empty response: ' + JSON.stringify(data) });
+      return res.status(500).json({ error: 'Empty: ' + JSON.stringify(data) });
     }
 
     res.status(200).json({ response: reply });
